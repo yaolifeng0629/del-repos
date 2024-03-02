@@ -4,9 +4,16 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "dev": "node index.js"
     },
     "keywords": [],
     "author": "",
-    "license": "ISC"
+    "license": "ISC",
+    "devDependencies": {
+        "@octokit/rest": "^20.0.2",
+        "chalk": "^2.4.2",
+        "inquirer": "^8.0.0",
+        "open": "^7.4.2",
+        "ora": "3.4.0"
+    }
 }
