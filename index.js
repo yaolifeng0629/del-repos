@@ -5,8 +5,6 @@ import { openBower, logMsg } from './package/utils.js';
 import Loading from './package/loading.js';
 import { QUESTION_LIST, GITHUB_LINK } from './package/config.js';
 
-// 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
-
 main();
 
 let answers = null;
@@ -15,7 +13,7 @@ let octokit = null;
 
 async function main() {
     LogGuide();
-    // await openBower(GITHUB_LINK);
+    await openBower(GITHUB_LINK);
 
     answers = await prompt(QUESTION_LIST);
     await handlePlatform(answers.platform);
@@ -35,7 +33,6 @@ const platforms = {
     Github: {
         handle: async function () {
             Loading.start();
-            answers.token = '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';
             octokit = createOctokitInstance(answers.token);
             const allRepos = await getUserAllRepos();
             await showRepos(allRepos);
