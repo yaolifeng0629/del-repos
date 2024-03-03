@@ -1,12 +1,21 @@
 {
-    "name": "BatchDeleteGithubRepo",
-    "version": "1.0.0",
-    "description": "",
+    "name": "del-repos",
+    "version": "0.1.0",
+    "description": "A command line tool for batch deleting GitHub repositories.",
     "main": "index.js",
     "scripts": {
-        "start": "node index.js"
+        "start": "node index.js",
+        "build": "babel package --out-dir dist",
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "keywords": [],
+    "keywords": [
+        "github",
+        "repositories",
+        "delete",
+        "batch",
+        "cli",
+        "gitee"
+    ],
     "author": "Ims",
     "license": "ISC",
     "type": "module",
@@ -17,5 +26,21 @@
         "inquirer": "^9.2.15",
         "open": "^10.0.4",
         "ora": "^8.0.1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/yaolifeng0629/delete-reponsitory-util"
+    },
+    "bugs": {
+        "url": "https://github.com/yaolifeng0629/delete-reponsitory-util/issues"
+    },
+    "homepage": "https://github.com/yaolifeng0629/delete-reponsitory-util#readme",
+    "engines": {
+        "node": ">=14.0.0"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.23.9",
+        "@babel/core": "^7.24.0",
+        "@babel/preset-env": "^7.24.0"
     }
 }

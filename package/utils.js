@@ -8,7 +8,7 @@ function logMsg(message, color) {
 async function openBower(link) {
     await open(link);
 
-    // 打开某个应用程序
+    // Open an application
     // const open = require('open');
     // (async () => {
     //     await open('/', {app: 'Visual Studio Code'});

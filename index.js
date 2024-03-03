@@ -15,7 +15,7 @@ async function main() {
     LogGuide();
     await openBower(GITHUB_LINK);
 
-    answers = await prompt(QUESTION_LIST);
+    answers = await prompt(QUESTION_LIST[0]);
     await handlePlatform(answers.platform);
 }
 
@@ -23,6 +23,7 @@ async function prompt(questionList) {
     const answers = await inquirer.prompt(questionList);
     return answers;
 }
+
 function createOctokitInstance(token) {
     return new Octokit({
         auth: token,
@@ -32,10 +33,12 @@ function createOctokitInstance(token) {
 const platforms = {
     Github: {
         handle: async function () {
+            let temp = await prompt(QUESTION_LIST[1]);
+            answers = { ...answers, ...temp };
             Loading.start();
-            octokit = createOctokitInstance(answers.token);
-            const allRepos = await getUserAllRepos();
-            await showRepos(allRepos);
+            octokit = createOctokitInstance(answers.token.trim());
+            const allRepos = await getAllRepos();
+            await displayRepos(allRepos);
         },
     },
     Gitee: {
@@ -54,7 +57,7 @@ async function handlePlatform(platform) {
     }
 }
 
-const getUserAllRepos = async () => {
+const getAllRepos = async () => {
     try {
         const { data } = await octokit.repos.listForAuthenticatedUser({
             visibility: 'all',
@@ -88,7 +91,7 @@ const getUserAllRepos = async () => {
     }
 };
 
-const showRepos = async repos => {
+const displayRepos = async repos => {
     try {
         owner = repos[0].owner;
 
@@ -125,10 +128,7 @@ async function deleteRepos(repos) {
     Loading.start();
     for (const repo of repos) {
         try {
-            await octokit.repos.delete({
-                owner: owner,
-                repo,
-            });
+            await deleteRepo(repo);
             count++;
         } catch (err) {
             Loading.stop();
@@ -140,4 +140,11 @@ async function deleteRepos(repos) {
         Loading.stop();
         logMsg(`Successfully deleted ${count} repositories`, 'green');
     }
+}
+
+async function deleteRepo(repo) {
+    await octokit.repos.delete({
+        owner: owner,
+        repo,
+    });
 }

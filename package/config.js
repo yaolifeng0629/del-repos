@@ -24,7 +24,7 @@ const QUESTION_LIST = [
     }
 ]
 
-const GITHUB_LINK = 'https://github.com/settings/tokens/new?scopes=delete_repo,project,delete:packages,repo&description=deleteRepos';
+const GITHUB_LINK = 'https://github.com/settings/tokens/new?scopes=delete_repo,project,repo&description=deleteRepos';
 
 export {
     QUESTION_LIST,
