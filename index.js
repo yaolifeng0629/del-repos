@@ -1,86 +1,67 @@
-const { Octokit } = require('@octokit/rest');
-const inquirer = require('inquirer');
-const open = require('open');
-const os = require('os');
-const chalk = require('chalk');
-const fs = require('fs');
-const ora = require('ora');
-// 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
+import { Octokit } from '@octokit/rest';
+import inquirer from 'inquirer';
+import LogGuide from './package/guide.js';
+import { openBower, logMsg } from './package/utils.js';
+import Loading from './package/loading.js';
+import { QUESTION_LIST, GITHUB_LINK } from './package/config.js';
 
-// const PLATFORM = os.platform();
-// if (platform === 'darwin') {
-//     console.log('User is using macOS.');
-// } else if (platform === 'win32') {
-//     console.log('User is using Windows.');
-// } else if (platform === 'linux') {
-//     console.log('User is using Linux.');
-// } else {
-//     console.log('User platform is ' + platform);
-// }
+// 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
 
+main();
 
-// 对于Linux和Mac用户
-// open('http://google.com');
-// 而在Windows上
-// start http://www.google.com
-
-
-// const GITHUB_LINK = 'https://github.com/settings/tokens/new?scopes=delete_repo,repo&description=Repo Remover Token';
-// const GITEE_LINK = '';
-
-let spinner = null;
-let platform = '';
-let token = '';
-let owner = null;
+let answers = null;
+let owner = '';
 let octokit = null;
-inquirer
-    .prompt([
-        {
-            type: 'list',
-            name: 'platform',
-            message: 'Please select a platform?',
-            choices: [
-                {
-                    name: 'Github',
-                    value: 'Github',
-                    description: 'Github',
-                },
-                {
-                    name: 'Gitee',
-                    value: 'Gitee',
-                    description: 'Gitee',
-                },
-            ],
-        },
-        {
-            type: 'input',
-            name: 'token',
-            message: 'Please enter your token?\n',
-        }
-    ])
-    .then(async answers => {
-        console.log('answers ---->', answers);
 
-        platform = answers.platform;
-        token = answers.token;
-        octokit = createOctokitInstance(token);
+async function main() {
+    LogGuide();
+    // await openBower(GITHUB_LINK);
 
-        if (platform === 'Github') {
-            spinner = ora('Loading Repository ...').start();
-            let allRepos = await getUserAllRepos();
-            // console.log('allRepos ---->', allRepos);
-            owner = allRepos[0].owner;
-            await showRepos(allRepos);
-        } else if (platform === 'Gitee') {
-            console.log(chalk.red('暂不支持Gitee'));
-        }
+    answers = await prompt(QUESTION_LIST);
+    await handlePlatform(answers.platform);
+}
+
+async function prompt(questionList) {
+    const answers = await inquirer.prompt(questionList);
+    return answers;
+}
+function createOctokitInstance(token) {
+    return new Octokit({
+        auth: token,
     });
+}
+
+const platforms = {
+    Github: {
+        handle: async function () {
+            Loading.start();
+            answers.token = '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';
+            octokit = createOctokitInstance(answers.token);
+            const allRepos = await getUserAllRepos();
+            await showRepos(allRepos);
+        },
+    },
+    Gitee: {
+        handle: function () {
+            logMsg('暂不支持Gitee', 'red');
+        },
+    },
+};
+
+async function handlePlatform(platform) {
+    const platformHandler = platforms[platform];
+    if (platformHandler) {
+        await platformHandler.handle();
+    } else {
+        logMsg('未知的平台', 'red');
+    }
+}
 
 const getUserAllRepos = async () => {
     try {
-
-
-        const { data } = await octokit.repos.listForAuthenticatedUser();
+        const { data } = await octokit.repos.listForAuthenticatedUser({
+            visibility: 'all',
+        });
 
         let allRepos = data.map(item => {
             return {
@@ -99,25 +80,28 @@ const getUserAllRepos = async () => {
                     gitUrl: item.clone_url,
                     sshUrl: item.ssh_url,
                     svnUrl: item.svn_url,
-                }
-            }
+                },
+            };
         });
-        spinner.stop();
+        Loading.stop();
         return allRepos;
     } catch (error) {
-        console.error("Error fetching repos: ", error);
+        Loading.stop();
+        logMsg(`Error fetching repos: ${error}`, 'red');
     }
-}
+};
 
-const showRepos = async (repos) => {
+const showRepos = async repos => {
     try {
+        owner = repos[0].owner;
+
         let reposList = repos.map((item, index) => {
             return {
                 name: item.fullName,
                 value: item.name,
                 description: item.description,
-            }
-        });;
+            };
+        });
         const answers = await inquirer.prompt([
             {
                 type: 'checkbox',
@@ -129,34 +113,34 @@ const showRepos = async (repos) => {
                         return 'You must choose at least one topping.';
                     }
                     return true;
-                }
-            }
+                },
+            },
         ]);
 
-        console.log(answers);
-        await deleteRepos(octokit, answers.repos);
+        await deleteRepos(answers.repos);
     } catch (error) {
-        console.error(error);
+        logMsg(error, 'red');
     }
-}
+};
 
-
-async function deleteRepos(octokit, reposToDelete) {
-    for (const repo of reposToDelete) {
+let count = 0;
+async function deleteRepos(repos) {
+    Loading.start();
+    for (const repo of repos) {
         try {
             await octokit.repos.delete({
                 owner: owner,
                 repo,
             });
-            console.log(`成功删除仓库: ${repo}`);
+            count++;
         } catch (err) {
-            console.error(`删除仓库失败: ${repo}`, err);
+            Loading.stop();
+            logMsg(`Failed to delete repository: ${repo}`, 'red');
+            logMsg(err, 'red');
         }
     }
-}
-
-function createOctokitInstance(token) {
-    return new Octokit({
-        auth: token,
-    });
+    if (count === repos.length) {
+        Loading.stop();
+        logMsg(`Successfully deleted ${count} repositories`, 'green');
+    }
 }
