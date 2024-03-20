@@ -1,6 +1,7 @@
 {
     "name": "del-repos",
-    "version": "0.1.2",
+    "version": "0.1.3",
+    "bin": "index.js",
     "description": "A command line tool for batch deleting GitHub repositories.",
     "main": "index.js",
     "scripts": {
