@@ -26,7 +26,7 @@ npm install del-repos
 1. 在命令行中，运行以下命令来启动 Delete Repository：
 
 ```bash
-delete-repository
+del-repos
 ```
 
 2. 然后会在浏览器中打开一个 Create Token 页面，此 Token 仅用于删除仓库。

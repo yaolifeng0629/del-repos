@@ -18,7 +18,7 @@ You need to install Node.js and npm on your machine. You can download and instal
    two。 Enter the following command to install Delete Repository:
 
 ````bash
-Npm install del-repos
+pnpm install del-repos
 `
 
 ## ⚠️ using
@@ -26,7 +26,7 @@ Npm install del-repos
 1. From the command line, run the following command to start Delete Repository:
 
 ```bash
-Delete-repository
+del-repos
 ````
 
 2. Then a Create Token page opens in the browser, and this Token is only used to delete the warehouse.
