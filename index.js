@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { Octokit } from '@octokit/rest';
 import inquirer from 'inquirer';
 import LogGuide from './package/guide.js';
