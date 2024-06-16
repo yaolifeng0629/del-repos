@@ -2,6 +2,8 @@
 
 <span>English | <a href="./README.zh.md">中文</a></span>
 
+![alt text](d5301d43be7e71c5c67a757e8cc88f8.png)
+
 ## ⚡ 介绍
 
 del-repos 是一个命令行工具，它可以帮助你批量删除 GitHub 上的仓库。这个工具非常适合需要管理大量仓库的开发者。

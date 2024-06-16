@@ -2,6 +2,8 @@
 
 <span> English | <a href= "./README.zh.md"> Chinese </a></span>
 
+![alt text](d5301d43be7e71c5c67a757e8cc88f8.png)
+
 ## ⚡introduction
 
 del-repos is a command-line tool that can help you bulk delete repositories on GitHub. This tool is ideal for developers who need to manage a large number of repositories.
