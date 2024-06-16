@@ -15,9 +15,11 @@ let octokit = null;
 
 async function main() {
     LogGuide();
+    // get github token
     await openBower(GITHUB_LINK);
 
     answers = await prompt(QUESTION_LIST[0]);
+    // choose platform
     await handlePlatform(answers.platform);
 }
 
@@ -64,7 +66,7 @@ const getAllRepos = async () => {
         const { data } = await octokit.repos.listForAuthenticatedUser({
             visibility: 'all',
         });
-
+        // get all repos
         let allRepos = data.map(item => {
             return {
                 owner: item.owner.login,
@@ -96,7 +98,7 @@ const getAllRepos = async () => {
 const displayRepos = async repos => {
     try {
         owner = repos[0].owner;
-
+        // get necessary repos's attribute
         let reposList = repos.map((item, index) => {
             return {
                 name: item.fullName,
@@ -125,6 +127,7 @@ const displayRepos = async repos => {
     }
 };
 
+// delete repos
 let count = 0;
 async function deleteRepos(repos) {
     Loading.start();
