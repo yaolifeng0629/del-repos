@@ -1,56 +1,81 @@
-# del-repos
+<h1 style="text-align: center;">del-repos</h1>
 
-<span>English | <a href="./README.zh.md">中文</a></span>
+<p style="text-align: center;">English | <a href="./README.zh.md">中文</a></p>
 
-![alt text](d5301d43be7e71c5c67a757e8cc88f8.png)
+<p style="display: flex; justify-content: center; align-items: center;"><img src="snapshot.png" width="70%"/></p>
 
 ## ⚡ 介绍
 
-del-repos 是一个命令行工具，它可以帮助你批量删除 GitHub 上的仓库。这个工具非常适合需要管理大量仓库的开发者。
+`del-repos` 一个用于批量删除 GitHub 或 Gitee 仓库的命令行工具。
+
+## 🛠️ 功能
+
+-   支持 `GitHub` 和 `Gitee` 平台
+-   批量删除选定的仓库
+-   通过交互式命令行界面选择要删除的仓库
 
 ## 🚀 安装
 
 ### 前提条件
 
--   你需要在你的机器上安装 Node.js 和 npm。你可以从 [Node.js 官网](https://nodejs.org/) 下载和安装。
+-   你的电脑上已经安装 `Node.js`，你可以从 [Node.js 官网](https://nodejs.org/) 下载和安装。
 
 ### 安装步骤
 
 1. 打开终端
-2. 输入以下命令来安装 del-repos：
+2. 输入以下命令来安装 `del-repos`：
 
 ```bash
-npm install del-repos
+npm install del-repos -g
+# or
+pnpm install del-repos -g
 ```
 
-## ⚠️ 使用
+-   选项
+    -   `-v`, `--version` 显示版本号
+    -   `-h`, `--help` 显示帮助信息
 
-1. 在命令行中，运行以下命令来启动 del-repos：
+## 🌟 使用
 
-```bash
-del-repos
-```
-
-2. 然后会在浏览器中打开一个 Create Token 页面，此 Token 仅用于删除仓库。
-
-3. 你会看到一个提示，让你选择一个平台（目前只支持 Github）。选择 Github 后，你需要输入你的 Github token。
-
-4. del-repos 会获取你的所有仓库，并显示一个列表让你选择要删除的仓库。
-
-5. 选择完毕后，del-repos 会开始删除你选择的仓库。
+1.  选择平台（`GitHub` 或 `Gitee`）。
+2.  输入对应平台的访问令牌（`Token`）。
+3.  对于 `GitHub` 或 `Gitee`，工具会打开对应平台的 `Token` 生成页面。
+5.  工具会获取你的仓库列表，并让你选择要删除的仓库。
+6.  确认选择后，工具将批量删除选定的仓库。
 
 ## ⚠️ 注意事项
 
--   请谨慎使用 del-repos，因为删除的仓库无法恢复。
--   在使用 del-repos 之前，确保你的 Github token 有足够的权限来删除仓库。
--   如果你遇到任何问题，或者有任何建议，欢迎提交 issue。
+-   删除前请确认待删除的仓库，因为删除的仓库无法恢复。
+-   在使用 `del-repos` 之前，确保你的 `Token` 有足够的权限来删除仓库。
+-   如果你遇到任何问题，或者有任何建议，欢迎提交 `Issue`。
 
 ## 🙌 贡献
 
--   我们欢迎所有的贡献和建议。如果你想为 del-repos 做出贡献，你可以：
+-   我们欢迎所有的贡献和建议。如果你想为 `del-repos` 做出贡献，你可以：
 
-    -   提交 bug 报告或建议
-    -   提交代码改进或新功能
-    -   改进文档
+1.  克隆仓库：
 
--   感谢所有已经为 del-repos 做出贡献的人！🎉
+```bash
+git clone https://github.com/yaolifeng0629/del-repos.git
+
+cd del-repos
+```
+
+2.  安装依赖：
+
+```bash
+npm install
+# or
+pnpm install
+```
+
+3.  进行开发和测试：
+
+```bash
+npm run dev
+# or
+pnpm dev
+```
+
+-   欢迎提交问题（`Issues`）和合并请求（`Pull Requests`）！
+-   感谢所有已经为 `del-repos` 做出贡献的人！🎉

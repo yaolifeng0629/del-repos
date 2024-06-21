@@ -1,54 +1,81 @@
-# del-repos
+<h1 style="text-align: center;">del-repos</h1>
 
-<span> English | <a href= "./README.zh.md"> Chinese </a></span>
+<p style="text-align: center;">English | <a href="./README.zh.md">中文</a></p>
 
-![alt text](d5301d43be7e71c5c67a757e8cc88f8.png)
+<p style="display: flex; justify-content: center; align-items: center;"><img src="snapshot.png" width="70%"/></p>
 
-## ⚡introduction
+### ⚡ introduction to
 
-del-repos is a command-line tool that can help you bulk delete repositories on GitHub. This tool is ideal for developers who need to manage a large number of repositories.
+`del- repos` is a command line tool used to delete GitHub or Gitee repositories in batches.
 
-## 🚀 installation
+### 🛠️ feature
 
-### preconditions
+-   supports `GitHub` and `Gitee` platforms
+-   batch delete selected warehouses
+-   Select the warehouse to delete through the interactive command line interface
 
-You need to install Node.js and npm on your machine. You can download and install it from [Node.js official website] (https://nodejs.org/).
+### 🚀 installation
 
-### installation steps
+#### preconditions
 
-1. Open the terminal, Enter the following command to install del-repos:
+-   `Node.js` has been installed on your computer. You can download and install it from [Node.js official website](https://nodejs.org/).
+
+#### installation steps
+
+1. Open the terminal
+2. Enter the following command to install `del- repos`:
 
 ```bash
-pnpm install del-repos
+npm install del-repos-g
+# or
+pnpm install del-repos-g
 ```
 
-## ⚠️ using
+-   Options
+    -   `-v`，`--version` displays the version number
+    -   `-h`，`--help` displays help information
 
-1. From the command line, run the following command to start del-repos:
+### 🌟 using
+
+1. Select the platform (`GitHub` or `Gitee`).
+2. Enter the access token (`Token`) of the corresponding platform.
+3. For `GitHub` or `Gitee`, the tool opens the `Token` of the corresponding platform to generate a page.
+4. The tool will get a list of your repositories and let you choose which repositories to delete.
+5. After confirming the selection, the tool will delete the selected warehouse in batch.
+
+### ⚠️ considerations
+
+-   Confirm the warehouse to be deleted before deletion, because the deleted warehouse cannot be restored.
+-   Before using `Token`, make sure that your `Token` has sufficient permissions to delete the repository.
+-   If you encounter any problems or have any suggestions, please feel free to submit `Issue`.
+
+### 🙌 contribution
+
+-   We welcome all contributions and suggestions. If you want to contribute to `del- repos`, you can:
+
+1. Clone repository:
 
 ```bash
-del-repos
-````
+git clone https://github.com/yaolifeng0629/del-repos.git
 
-2. Then a Create Token page opens in the browser, and this Token is only used to delete the warehouse.
+cd del-repos
+```
 
-3. You will see a prompt for you to choose a platform (currently only Github is supported). After selecting Github, you need to enter your Github token.
+2. Installation dependencies:
 
-4. del-repos will get all your warehouses and display a list that allows you to select the repositories to delete.
+```bash
+npm install
+# or
+pnpm install
+```
 
-5. After the selection, del-repos will start to delete the warehouse you selected.
+3. Develop and test:
 
-## ⚠️ considerations for
+```bash
+npm run dev
+# or
+pnpm dev
+```
 
--   Please use del-repos carefully, as deleted repositories cannot be recovered.
--   before using del-repos, make sure your Github token has sufficient permissions to delete the repository.
--   if you encounter any problems or have any suggestions, you are welcome to submit issue.
-
-## 🙌 contribution
-
--   We welcome all contributions and suggestions. If you want to contribute to del-repos, you can:
-    -   submit bug reports or recommendations
-    -   submit code improvements or new features
-    -   improve documentation
-
--   thanks to all those who have contributed to del-repos! 🎉
+-   Welcome to submit questions (`Issues`) and merge requests (`Issues`)!
+-   Thanks to all those who have contributed to `del- repos`! 🎉

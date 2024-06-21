@@ -1,46 +1,53 @@
 {
     "name": "del-repos",
-    "version": "0.1.7",
-    "bin": "./index.js",
-    "description": "A command line tool for batch deleting GitHub repositories.",
+    "version": "1.0.0",
+    "bin": {
+        "del-repos": "./dist/index.js"
+    },
+    "description": "A command-line tool for bulk deleting GitHub or Gitee repositories",
     "main": "index.js",
     "scripts": {
-        "start": "node index.js",
-        "build": "babel package --out-dir dist"
+        "lint": "pnpm tsc --pretty",
+        "build": "node scripts/build.js",
+        "dev": "npm run build && node dist/index.js"
     },
     "keywords": [
+        "Github",
         "github",
         "repositories",
         "delete",
         "batch",
         "cli",
-        "gitee"
+        "gitee",
+        "Gitee",
+        "repos",
+        "del"
     ],
     "author": "Ims",
     "license": "ISC",
-    "type": "module",
-    "dependencies": {
-        "@octokit/rest": "^20.0.2",
-        "boxen": "^7.1.1",
-        "chalk": "^5.3.0",
-        "inquirer": "^9.2.15",
-        "open": "^10.0.4",
-        "ora": "^8.0.1"
-    },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/yaolifeng0629/delete-reponsitory-util"
+        "url": "git+https://github.com/yaolifeng0629/del-repos"
     },
     "bugs": {
-        "url": "https://github.com/yaolifeng0629/delete-reponsitory-util/issues"
+        "url": "https://github.com/yaolifeng0629/del-repos/issues"
     },
-    "homepage": "https://github.com/yaolifeng0629/delete-reponsitory-util#readme",
+    "homepage": "https://github.com/yaolifeng0629/del-repos#readme",
     "engines": {
         "node": ">=14.0.0"
     },
+    "dependencies": {
+        "axios": "^0.21.4",
+        "inquirer": "^8.2.6",
+        "kolorist": "^1.8.0",
+        "open": "^8.4.2",
+        "ora": "^5.4.1",
+        "yargs": "^17.7.2"
+    },
     "devDependencies": {
-        "@babel/cli": "^7.23.9",
-        "@babel/core": "^7.24.0",
-        "@babel/preset-env": "^7.24.0"
+        "@types/inquirer": "^9.0.7",
+        "@types/node": "^20.14.7",
+        "@types/yargs": "^17.0.32",
+        "typescript": "^4.9.5"
     }
 }
