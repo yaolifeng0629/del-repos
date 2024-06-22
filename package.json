@@ -1,6 +1,6 @@
 {
     "name": "del-repos",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "bin": {
         "del-repos": "./dist/index.js"
     },
@@ -11,6 +11,13 @@
         "build": "node scripts/build.js",
         "dev": "npm run build && node dist/index.js"
     },
+    "files": [
+        "dist",
+        "package.json",
+        "README.md",
+        "README.zh.md",
+        "snapshot.png"
+    ],
     "keywords": [
         "Github",
         "github",

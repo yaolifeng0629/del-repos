@@ -6,7 +6,7 @@
 
 ### ⚡ introduction to
 
-`del- repos` is a command line tool used to delete GitHub or Gitee repositories in batches.
+`del-repos` is a command line tool used to delete GitHub or Gitee repositories in batches.
 
 ### 🛠️ feature
 
