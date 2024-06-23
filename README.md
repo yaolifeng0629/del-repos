@@ -79,3 +79,6 @@ pnpm dev
 
 -   Welcome to submit questions (`Issues`) and merge requests (`Issues`)!
 -   Thanks to all those who have contributed to `del- repos`! 🎉
+
+### 🚀 Star history
+[![Stargazers over time](https://starchart.cc/yaolifeng0629/del-repos.svg?variant=adaptive)](https://starchart.cc/yaolifeng0629/del-repos)

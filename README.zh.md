@@ -4,23 +4,23 @@
 
 <p style="display: flex; justify-content: center; align-items: center;"><img src="snapshot.png" width="70%"/></p>
 
-## ⚡ 介绍
+### ⚡ 介绍
 
 `del-repos` 一个用于批量删除 GitHub 或 Gitee 仓库的命令行工具。
 
-## 🛠️ 功能
+### 🛠️ 功能
 
 -   支持 `GitHub` 和 `Gitee` 平台
 -   批量删除选定的仓库
 -   通过交互式命令行界面选择要删除的仓库
 
-## 🚀 安装
+### 🚀 安装
 
-### 前提条件
+#### 前提条件
 
 -   你的电脑上已经安装 `Node.js`，你可以从 [Node.js 官网](https://nodejs.org/) 下载和安装。
 
-### 安装步骤
+#### 安装步骤
 
 1. 打开终端
 2. 输入以下命令来安装 `del-repos`：
@@ -35,7 +35,7 @@ pnpm install del-repos -g
     -   `-v`, `--version` 显示版本号
     -   `-h`, `--help` 显示帮助信息
 
-## 🌟 使用
+### 🌟 使用
 
 1.  选择平台（`GitHub` 或 `Gitee`）。
 2.  输入对应平台的访问令牌（`Token`）。
@@ -43,13 +43,13 @@ pnpm install del-repos -g
 5.  工具会获取你的仓库列表，并让你选择要删除的仓库。
 6.  确认选择后，工具将批量删除选定的仓库。
 
-## ⚠️ 注意事项
+### ⚠️ 注意事项
 
 -   删除前请确认待删除的仓库，因为删除的仓库无法恢复。
 -   在使用 `del-repos` 之前，确保你的 `Token` 有足够的权限来删除仓库。
 -   如果你遇到任何问题，或者有任何建议，欢迎提交 `Issue`。
 
-## 🙌 贡献
+### 🙌 贡献
 
 -   我们欢迎所有的贡献和建议。如果你想为 `del-repos` 做出贡献，你可以：
 
@@ -79,3 +79,6 @@ pnpm dev
 
 -   欢迎提交问题（`Issues`）和合并请求（`Pull Requests`）！
 -   感谢所有已经为 `del-repos` 做出贡献的人！🎉
+
+### 🚀 星路历程
+[![Stargazers over time](https://starchart.cc/yaolifeng0629/del-repos.svg?variant=adaptive)](https://starchart.cc/yaolifeng0629/del-repos)
