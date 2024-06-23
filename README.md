@@ -2,7 +2,7 @@
 
 <p align="center">English | <a href="./README.zh.md">中文</a></p>
 
-<p style="display: flex; justify-content: center; align-items: center;"><img src="screen.png" width="70%"/></p>
+<p align="center"><img src="screen.png" width="70%"/></p>
 
 ### ⚡ introduction to
 
