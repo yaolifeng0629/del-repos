@@ -1,8 +1,8 @@
-<h1 style="text-align: center;">del-repos</h1>
+<h1 align="center">del-repos</h1>
 
-<p style="text-align: center;">English | <a href="./README.zh.md">中文</a></p>
+<p align="center">English | <a href="./README.zh.md">中文</a></p>
 
-<p style="display: flex; justify-content: center; align-items: center;"><img src="snapshot.png" width="70%"/></p>
+<p style="display: flex; justify-content: center; align-items: center;"><img src="screen.png" width="70%"/></p>
 
 ### ⚡ introduction to
 
@@ -26,9 +26,9 @@
 2. Enter the following command to install `del- repos`:
 
 ```bash
-npm install del-repos-g
+npm install del-repos -g
 # or
-pnpm install del-repos-g
+pnpm install del-repos -g
 ```
 
 -   Options
