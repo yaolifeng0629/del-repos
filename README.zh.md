@@ -40,8 +40,8 @@ pnpm install del-repos -g
 1.  选择平台（`GitHub` 或 `Gitee`）。
 2.  输入对应平台的访问令牌（`Token`）。
 3.  对于 `GitHub` 或 `Gitee`，工具会打开对应平台的 `Token` 生成页面。
-5.  工具会获取你的仓库列表，并让你选择要删除的仓库。
-6.  确认选择后，工具将批量删除选定的仓库。
+4.  工具会获取你的仓库列表，并让你选择要删除的仓库。
+5.  确认选择后，工具将批量删除选定的仓库。
 
 ### ⚠️ 注意事项
 
@@ -80,5 +80,43 @@ pnpm dev
 -   欢迎提交问题（`Issues`）和合并请求（`Pull Requests`）！
 -   感谢所有已经为 `del-repos` 做出贡献的人！🎉
 
+### 赞助
+
+如果你觉得这个工具对你有所帮助，麻烦动动小手给我的 [GitHub](https://github.com/yaolifeng0629/del-repos) 仓库点个 Star！
+
+你的支持是我前进的动力！
+
+<p class="qrcode">
+  <img src="/wechat.jpg" alt="wechat">
+  <img src="/alipay.jpg" alt="alipay">
+</p>
+
+<style>
+.qrcode {
+  display: flex;
+  justify-content: space-between;
+}
+
+.qrcode img {
+    width: 40%;
+    object-fit: cover;
+}
+
+@media (max-width: 420px) {
+  .qrcode {
+    flex-direction: column;
+  }
+
+  .qrcode img {
+    width: 100%;
+  }
+
+  .qrcode img + img {
+    margin-top: 1rem;
+  }
+}
+</style>
+
 ### 🚀 星路历程
+
 [![Stargazers over time](https://starchart.cc/yaolifeng0629/del-repos.svg?variant=adaptive)](https://starchart.cc/yaolifeng0629/del-repos)
