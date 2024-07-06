@@ -85,35 +85,9 @@ If you think this tool is helpful to you, please use your hand to point a Star t
 Your support is the driving force for me to move forward!
 
 <p class="qrcode">
-  <img src="/wechat.jpg" alt="wechat">
-  <img src="/alipay.jpg" alt="alipay">
+  <img src="/wechat.jpg" alt="wechat" style="width: 40%; object-fit: cover;">
+  <img src="/alipay.jpg" alt="alipay" style="width: 40%; object-fit: cover;">
 </p>
-
-<style>
-.qrcode {
-  display: flex;
-  justify-content: space-between;
-}
-
-.qrcode img {
-    width: 40%;
-    object-fit: cover;
-}
-
-@media (max-width: 420px) {
-  .qrcode {
-    flex-direction: column;
-  }
-
-  .qrcode img {
-    width: 100%;
-  }
-
-  .qrcode img + img {
-    margin-top: 1rem;
-  }
-}
-</style>
 
 ### 🚀 Star history
 [![Stargazers over time](https://starchart.cc/yaolifeng0629/del-repos.svg?variant=adaptive)](https://starchart.cc/yaolifeng0629/del-repos)
