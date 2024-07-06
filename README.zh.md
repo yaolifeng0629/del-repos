@@ -86,36 +86,10 @@ pnpm dev
 
 你的支持是我前进的动力！
 
-<p class="qrcode">
-  <img src="/wechat.jpg" alt="wechat">
-  <img src="/alipay.jpg" alt="alipay">
+<p class="qrcode" style="display: flex; justify-content: space-between;">
+  <img src="/wechat.jpg" alt="wechat" style="width: 40%; object-fit: cover;">
+  <img src="/alipay.jpg" alt="alipay" style="width: 40%; object-fit: cover;">
 </p>
-
-<style>
-.qrcode {
-  display: flex;
-  justify-content: space-between;
-}
-
-.qrcode img {
-    width: 40%;
-    object-fit: cover;
-}
-
-@media (max-width: 420px) {
-  .qrcode {
-    flex-direction: column;
-  }
-
-  .qrcode img {
-    width: 100%;
-  }
-
-  .qrcode img + img {
-    margin-top: 1rem;
-  }
-}
-</style>
 
 ### 🚀 星路历程
 
