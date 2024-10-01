@@ -1,8 +1,8 @@
 {
     "name": "del-repos",
-    "version": "1.0.3",
+    "version": "1.0.6",
     "bin": {
-        "del-repos": "./dist/index.js"
+        "del-repos": "dist/index.js"
     },
     "description": "A command-line tool for bulk deleting GitHub or Gitee repositories",
     "main": "index.js",
@@ -34,7 +34,7 @@
     "license": "ISC",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/yaolifeng0629/del-repos"
+        "url": "git+https://github.com/yaolifeng0629/del-repos.git"
     },
     "bugs": {
         "url": "https://github.com/yaolifeng0629/del-repos/issues"

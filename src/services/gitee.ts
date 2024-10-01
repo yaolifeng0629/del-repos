@@ -5,7 +5,10 @@ const GITEE_API_BASE = 'https://gitee.com/api/v5';
 
 export const fetchGiteeRepos = async (token: string) => {
     let page = 1;
-    let repos: { name: string }[] = [];
+    let repos: {
+        html_url: string;
+        full_name: string;
+    }[] = [];
     let hasMore = true;
 
     // more information: https://gitee.com/api/v5/swagger#/getV5UsersUsernameRepos
@@ -27,7 +30,7 @@ export const fetchGiteeRepos = async (token: string) => {
         page++;
     }
 
-    return repos.map(repo => repo.name);
+    return repos.map(repo => `${repo.full_name} \u001b]8;;${repo.html_url}\u0007🔗\u001b]8;;\u0007`);
 };
 
 export const deleteGiteeRepos = async (token: string, repos: string[]) => {

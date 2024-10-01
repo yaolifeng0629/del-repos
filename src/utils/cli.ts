@@ -7,8 +7,8 @@ export const promptPlatform = async () => {
             type: 'list',
             name: 'platform',
             message: 'Choose a platform:',
-            choices: ['GitHub', 'Gitee']
-        }
+            choices: ['GitHub', 'Gitee'],
+        },
     ]);
     return platform;
 };
@@ -26,8 +26,8 @@ export const promptToken = async (platform: string) => {
         {
             type: 'input',
             name: 'token',
-            message: `Please enter your ${platform} token:`
-        }
+            message: `Please enter your ${platform} token:`,
+        },
     ]);
     return token;
 };
@@ -38,8 +38,9 @@ export const promptRepositories = async (repos: string[]) => {
             type: 'checkbox',
             name: 'selectedRepos',
             message: 'Select the repositories you want to delete:\n',
-            choices: repos
-        }
+            choices: repos,
+            pageSize: 20,
+        },
     ]);
     return selectedRepos;
 };

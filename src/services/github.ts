@@ -5,7 +5,10 @@ const GITHUB_API_BASE = 'https://api.github.com';
 
 export const fetchGithubRepos = async (token: string) => {
     let page = 1;
-    let repos: { name: string }[] = [];
+    let repos: {
+        html_url: string;
+        full_name: string;
+    }[] = [];
     let hasMore = true;
 
     while (hasMore) {
@@ -27,7 +30,7 @@ export const fetchGithubRepos = async (token: string) => {
         page++;
     }
 
-    return repos.map(repo => repo.name);
+    return repos.map(repo => `${repo.full_name} \u001b]8;;${repo.html_url}\u0007🔗\u001b]8;;\u0007`);
 };
 
 export const deleteGithubRepos = async (token: string, repos: string[]) => {
