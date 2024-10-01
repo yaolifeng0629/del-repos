@@ -23,7 +23,7 @@
 #### installation steps
 
 1. Open the terminal
-2. Enter the following command to install `del- repos`:
+2. Enter the following command to install `del-repos`:
 
 ```bash
 npm install del-repos -g
@@ -41,6 +41,7 @@ pnpm install del-repos -g
 2. Enter the access token (`Token`) of the corresponding platform.
 3. For `GitHub` or `Gitee`, the tool opens the `Token` of the corresponding platform to generate a page.
 4. The tool will get a list of your repositories and let you choose which repositories to delete.
+   - After the warehouse name 🔗 The symbol is a shortcut link, click to directly access the corresponding warehouse.
 5. After confirming the selection, the tool will delete the selected warehouse in batch.
 
 ### ⚠️ considerations
