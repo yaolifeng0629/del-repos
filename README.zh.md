@@ -87,11 +87,6 @@ pnpm dev
 
 你的支持是我前进的动力！
 
-<p class="qrcode" style="display: flex; justify-content: space-between;">
-  <img src="/wechat.jpg" alt="wechat" style="width: 40%; object-fit: cover;">
-  <img src="/alipay.jpg" alt="alipay" style="width: 40%; object-fit: cover;">
-</p>
-
 ### 🚀 星路历程
 
 [![Stargazers over time](https://starchart.cc/yaolifeng0629/del-repos.svg?variant=adaptive)](https://starchart.cc/yaolifeng0629/del-repos)
