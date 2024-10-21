@@ -1,5 +1,6 @@
 import axios from 'axios';
 import ora from 'ora';
+import { extractPath } from '../utils';
 
 const GITHUB_API_BASE = 'https://api.github.com';
 
@@ -15,15 +16,15 @@ export const fetchGithubRepos = async (token: string) => {
         // more information: https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#list-repositories-for-the-authenticated-user
         const response = await axios.get(`${GITHUB_API_BASE}/user/repos`, {
             headers: {
-                Authorization: `token ${token}`,
+                Authorization: `token ${token}`
             },
             params: {
                 type: 'all',
                 sort: 'updated',
                 direction: 'desc',
                 page,
-                per_page: 100,
-            },
+                per_page: 100
+            }
         });
         repos = repos.concat(response.data);
         hasMore = response.data.length === 100;
@@ -40,8 +41,8 @@ export const deleteGithubRepos = async (token: string, repos: string[]) => {
     try {
         const response = await axios.get(`${GITHUB_API_BASE}/user`, {
             headers: {
-                Authorization: `token ${token}`,
-            },
+                Authorization: `token ${token}`
+            }
         });
         username = response.data.login;
     } catch (error) {
@@ -49,23 +50,23 @@ export const deleteGithubRepos = async (token: string, repos: string[]) => {
         return;
     }
 
-    for (const repo of repos) {
+    for (let repo of repos) {
         spinner.start(`Deleting repository ${repo}...`);
         try {
-            const encodedRepo = encodeURIComponent(repo);
-            const deleteUrl = `${GITHUB_API_BASE}/repos/${username}/${encodedRepo}`;
+            repo = extractPath(repo);
+            const deleteUrl = `${GITHUB_API_BASE}/repos/${username}/${repo}`;
 
             // more information: https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#get-a-repository
             await axios.get(deleteUrl, {
                 headers: {
-                    Authorization: `token ${token}`,
-                },
+                    Authorization: `token ${token}`
+                }
             });
             // more information: https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#delete-a-repository
             await axios.delete(deleteUrl, {
                 headers: {
-                    Authorization: `token ${token}`,
-                },
+                    Authorization: `token ${token}`
+                }
             });
 
             spinner.succeed(`Deleted repository ${repo}.`);
