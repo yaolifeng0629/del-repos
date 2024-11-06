@@ -34,7 +34,17 @@ pnpm install del-repos -g
 -   选项
     -   `-v`, `--version` 显示版本号
     -   `-h`, `--help` 显示帮助信息
+    -   `-t`, `o/a` 获取仓库类型, 默认值 `a` `(o: owner，a: all)`
+        -   如何指定获取仓库类型
+        ```sh
+        # 获取个人所有仓库
+        del-repos -t o
 
+        # 获取所有仓库(包含合作者和组织成员仓库)
+        del-repos
+        # or
+        del-repos -t a
+        ```
 ### 🌟 使用
 
 1.  选择平台（`GitHub` 或 `Gitee`）。

@@ -4,7 +4,14 @@ import { extractPath } from '../utils';
 
 const GITEE_API_BASE = 'https://gitee.com/api/v5';
 
-export const fetchGiteeRepos = async (token: string) => {
+/**
+ * 获取 Gitee 仓库
+ * @param token Gitee token
+ * @param type 仓库类型: owner || all
+ * @returns 仓库列表
+ */
+
+export const fetchGiteeRepos = async (token: string, type: string) => {
     let page = 1;
     let repos: {
         html_url: string;
@@ -16,15 +23,15 @@ export const fetchGiteeRepos = async (token: string) => {
     while (hasMore) {
         const response = await axios.get(`${GITEE_API_BASE}/user/repos`, {
             headers: {
-                Authorization: `token ${token}`
+                Authorization: `token ${token}`,
             },
             params: {
-                type: 'all',
+                type: type,
                 sort: 'updated',
                 direction: 'desc',
                 page,
-                per_page: 100
-            }
+                per_page: 100,
+            },
         });
         repos = repos.concat(response.data);
         hasMore = response.data.length === 100;
@@ -34,6 +41,12 @@ export const fetchGiteeRepos = async (token: string) => {
     return repos.map(repo => `${repo.full_name} \u001b]8;;${repo.html_url}\u0007🔗\u001b]8;;\u0007`);
 };
 
+/**
+ * 删除 Gitee 仓库
+ * @param token Gitee token
+ * @param repos 待删除的仓库
+ * @returns 删除结果
+ */
 export const deleteGiteeRepos = async (token: string, repos: string[]) => {
     const spinner = ora();
     let username = '';
@@ -41,8 +54,8 @@ export const deleteGiteeRepos = async (token: string, repos: string[]) => {
     try {
         const response = await axios.get(`${GITEE_API_BASE}/user`, {
             headers: {
-                Authorization: `token ${token}`
-            }
+                Authorization: `token ${token}`,
+            },
         });
         username = response.data.login;
     } catch (error) {
@@ -58,14 +71,14 @@ export const deleteGiteeRepos = async (token: string, repos: string[]) => {
             const deleteUrl = `${GITEE_API_BASE}/repos/${username}/${repo}?access_token=${token}`;
             await axios.get(deleteUrl, {
                 headers: {
-                    Authorization: `token ${token}`
-                }
+                    Authorization: `token ${token}`,
+                },
             });
             // more information: https://gitee.com/api/v5/swagger#/deleteV5ReposOwnerRepo
             await axios.delete(deleteUrl, {
                 headers: {
-                    Authorization: `token ${token}`
-                }
+                    Authorization: `token ${token}`,
+                },
             });
 
             spinner.succeed(`Deleted repository ${repo}.`);
