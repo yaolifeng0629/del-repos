@@ -130,3 +130,5 @@ dist
 .pnp.*
 note.txt
 repos_template.js
+repos.json
+
