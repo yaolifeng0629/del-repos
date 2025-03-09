@@ -34,7 +34,17 @@ pnpm install del-repos -g
 -   Options
     -   `-v`，`--version` displays the version number
     -   `-h`，`--help` displays help information
+    -   `-t`, `o/a` get repositories type, default value `a` `(o: owner，a: all)`
+        -   How to specify the acquisition repositories type：
+        ```sh
+        # get all personal repositories
+        del-repos -t o
 
+        # Get all repositories (including collaborators and organization member repositories)
+        del-repos
+        # or
+        del-repos -t a
+        ```
 ### 🌟 using
 
 1. Select the platform (`GitHub` or `Gitee`).

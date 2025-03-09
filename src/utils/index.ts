@@ -12,3 +12,11 @@ export const extractPath = (input: string): string => {
 
     return result;
 };
+
+export const reposType = (type: string): string => {
+    const map = new Map([
+        ['o', 'owner'],
+        ['a', 'all'],
+    ]);
+    return map.get(type) || 'all';
+};

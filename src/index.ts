@@ -7,6 +7,7 @@ import { fetchGithubRepos, deleteGithubRepos } from './services/github';
 import { fetchGiteeRepos, deleteGiteeRepos } from './services/gitee';
 import { startSpinner, stopSpinner } from './utils/spinner';
 import { readFileSync } from 'fs';
+import { reposType } from './utils';
 import { join } from 'path';
 
 const packageJsonPath = join(__dirname, '../package.json');
@@ -19,8 +20,14 @@ const argv = yargs(hideBin(process.argv))
     .alias('v', 'version')
     .help('h')
     .alias('h', 'help')
-    .epilog('For more information, visit https://github.com/yaolifeng0629/del-repos.git')
-    .argv;
+    .option('t', {
+        alias: 'type',
+        describe: '显示的仓库列表类型(o: owner, a: all)',
+        choices: ['o', 'a'], // 限制参数值为 'o': owner 或 'a': all
+        demandOption: false, // 是否可选参数
+        type: 'string',
+    })
+    .epilog('For more information, visit https://github.com/yaolifeng0629/del-repos.git').argv;
 
 const main = async () => {
     console.log(blue('Welcome to the Repository Deletion CLI Tool'));
@@ -35,12 +42,18 @@ const main = async () => {
 
     startSpinner('Fetching your repositories...');
 
+    /**
+     * 获取仓库类型
+     * @param t(type) 仓库类型: owner || all
+     */
+    const { t: type = 'a' } = await argv;
+
     try {
         let repos;
         if (platform === 'GitHub') {
-            repos = await fetchGithubRepos(token);
+            repos = await fetchGithubRepos(token, reposType(type));
         } else {
-            repos = await fetchGiteeRepos(token);
+            repos = await fetchGiteeRepos(token, reposType(type));
         }
 
         stopSpinner('Fetched repositories successfully.');
