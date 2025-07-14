@@ -1,6 +1,7 @@
 import axios from 'axios';
 import ora from 'ora';
 import { extractPath } from '../utils';
+import { green, red, yellow, cyan, dim } from 'kolorist';
 
 const GITHUB_API_BASE = 'https://api.github.com';
 
@@ -50,6 +51,8 @@ export const deleteGithubRepos = async (token: string, repos: string[]) => {
     const spinner = ora();
     let username = '';
 
+    // 获取用户名
+    console.log(dim('🔍  Verifying user credentials...'));
     try {
         const response = await axios.get(`${GITHUB_API_BASE}/user`, {
             headers: {
@@ -57,35 +60,58 @@ export const deleteGithubRepos = async (token: string, repos: string[]) => {
             },
         });
         username = response.data.login;
+        console.log(green(`✅  Authenticated as: ${username}\n`));
     } catch (error) {
-        spinner.fail(`Failed to get username. ${(error as any).response?.data?.message || (error as Error).message}`);
+        console.log(red('❌  Failed to authenticate with GitHub'));
+        console.error(red(`Error: ${(error as any).response?.data?.message || (error as Error).message}\n`));
         return;
     }
 
-    for (let repo of repos) {
-        spinner.start(`Deleting repository ${repo}...`);
-        try {
-            repo = extractPath(repo);
-            const deleteUrl = `${GITHUB_API_BASE}/repos/${username}/${repo}`;
+    let successCount = 0;
+    let failCount = 0;
+    const totalRepos = repos.length;
 
-            // more information: https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#get-a-repository
+    console.log(cyan(`🗑️  Starting deletion of ${totalRepos} repositories...\n`));
+
+    for (let i = 0; i < repos.length; i++) {
+        let repo = repos[i];
+        const repoName = extractPath(repo);
+        const progress = `(${i + 1}/${totalRepos})`;
+
+        spinner.start(`${progress} Deleting ${yellow(repoName)}...`);
+
+        try {
+            const deleteUrl = `${GITHUB_API_BASE}/repos/${username}/${repoName}`;
+
+            // 验证仓库存在
             await axios.get(deleteUrl, {
                 headers: {
                     Authorization: `token ${token}`,
                 },
             });
-            // more information: https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#delete-a-repository
+
+            // 删除仓库
             await axios.delete(deleteUrl, {
                 headers: {
                     Authorization: `token ${token}`,
                 },
             });
 
-            spinner.succeed(`Deleted repository ${repo}.`);
+            spinner.succeed(`${progress} ${green('✅  Deleted')} ${repoName}`);
+            successCount++;
         } catch (error) {
             const errorMessage = (error as any).response?.data?.message || (error as Error).message;
-            spinner.fail(`Failed to delete repository ${repo}. ${errorMessage}`);
-            console.error(`Error details: ${errorMessage}`);
+            spinner.fail(`${progress} ${red('❌  Failed to delete')} ${repoName}`);
+            console.log(dim(`   └─ Error: ${errorMessage}`));
+            failCount++;
         }
     }
+
+    // 显示最终结果
+    console.log(cyan('\n📊  Deletion Summary:'));
+    console.log(green(`  ✅  Successfully deleted: ${successCount} repositories`));
+    if (failCount > 0) {
+        console.log(red(`  ❌  Failed to delete: ${failCount} repositories`));
+    }
+    console.log(dim(`  📈  Success rate: ${Math.round((successCount / totalRepos) * 100)}%\n`));
 };

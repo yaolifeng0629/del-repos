@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { blue } from 'kolorist';
+import inquirer from 'inquirer';
+import { blue, green, red, yellow, cyan, bold, dim } from 'kolorist';
 import { promptPlatform, promptToken, promptRepositories } from './utils/cli';
 import { fetchGithubRepos, deleteGithubRepos } from './services/github';
 import { fetchGiteeRepos, deleteGiteeRepos } from './services/gitee';
@@ -29,52 +30,101 @@ const argv = yargs(hideBin(process.argv))
     })
     .epilog('For more information, visit https://github.com/yaolifeng0629/del-repos.git').argv;
 
+const printWelcomeBanner = () => {
+    console.log(bold(cyan('\n╔══════════════════════════════════════════════════════════════╗')));
+    console.log(bold(cyan('║                    🗑️  Del-Repos Cli Tool                     ║')));
+    console.log(bold(cyan('║                                                              ║')));
+    console.log(bold(cyan('║              Batch Delete GitHub/Gitee Repositories          ║')));
+    console.log(bold(cyan('╚══════════════════════════════════════════════════════════════╝')));
+    console.log('                        Version: ' + version + '\n');
+};
+
 const main = async () => {
-    console.log(blue('Welcome to the Repository Deletion CLI Tool'));
+    printWelcomeBanner();
 
     const platform = await promptPlatform();
 
-    if (platform === 'Gitee') {
-        console.log(blue('Gitee support is now available.'));
-    }
-
     const token = await promptToken(platform);
 
-    startSpinner('Fetching your repositories...');
+    console.log(cyan('📡  Fetching Repository Information'));
+    startSpinner(' Fetching your repositories...');
 
     /**
      * 获取仓库类型
      * @param t(type) 仓库类型: owner || all
      */
     const { t: type = 'a' } = await argv;
+    const repoType = reposType(type);
+    const typeDisplay = type === 'o' ? 'owner repositories' : 'all repositories';
 
     try {
         let repos;
         if (platform === 'GitHub') {
-            repos = await fetchGithubRepos(token, reposType(type));
+            repos = await fetchGithubRepos(token, repoType);
         } else {
-            repos = await fetchGiteeRepos(token, reposType(type));
+            repos = await fetchGiteeRepos(token, repoType);
         }
 
-        stopSpinner('Fetched repositories successfully.');
+        stopSpinner(`✅  Successfully fetched ${repos.length} ${typeDisplay}`);
+
+        if (repos.length === 0) {
+            console.log(yellow('⚠️  No repositories found.'));
+            console.log(dim('This might be because:'));
+            console.log(dim('  • You have no repositories'));
+            console.log(dim('  • Your token doesn\'t have the required permissions'));
+            console.log(dim('  • There was an issue with the API request\n'));
+            process.exit(0);
+        }
 
         const selectedRepos = await promptRepositories(repos);
 
         if (selectedRepos.length === 0) {
-            console.log(blue('No repositories selected.'));
-            process.exit(1);
+            console.log(yellow('⚠️  No repositories selected for deletion.'));
+            console.log(dim('Operation cancelled.\n'));
+            process.exit(0);
         }
 
+        // 确认删除
+        console.log(red('\n⚠️  DANGER ZONE  ⚠️'));
+        console.log(red('You are about to permanently delete the following repositories:'));
+        selectedRepos.forEach((repo: string, index: number) => {
+            const cleanRepoName = repo.split(' ')[0];
+            console.log(red(`  ${index + 1}. ${cleanRepoName}`));
+        });
+        console.log(red('\n❗  This action CANNOT be undone!\n'));
+
+        const { confirmDelete } = await inquirer.prompt([
+            {
+                type: 'confirm',
+                name: 'confirmDelete',
+                message: '💀  Are you absolutely sure you want to delete these repositories?',
+                default: false,
+            },
+        ]);
+
+        if (!confirmDelete) {
+            console.log(green('✅  Operation cancelled. No repositories were deleted.\n'));
+            process.exit(0);
+        }
+
+        console.log(cyan('\n🗑️  Starting Deletion Process'));
         if (platform === 'GitHub') {
             await deleteGithubRepos(token, selectedRepos);
         } else {
             await deleteGiteeRepos(token, selectedRepos);
         }
 
-        console.log(blue('All selected repositories have been deleted.'));
+        console.log(green('\n🎉  All selected repositories have been successfully deleted!'));
+        console.log(dim('Thank you for using del-repos CLI tool.\n'));
     } catch (error) {
-        stopSpinner('Failed to fetch repositories.');
-        console.error((error as Error).message);
+        stopSpinner('❌  Failed to fetch repositories');
+        console.log(red('\n💥  An error occurred:'));
+        console.error(red((error as Error).message));
+        console.log(dim('\nPlease check:'));
+        console.log(dim('  • Your internet connection'));
+        console.log(dim('  • Your token permissions'));
+        console.log(dim('  • The platform API status\n'));
+        process.exit(1);
     }
 };
 
