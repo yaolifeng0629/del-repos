@@ -62,13 +62,25 @@ export const promptRepositories = async (repos: string[]) => {
     console.log(cyan('\n📦  Repository Selection'));
     console.log(dim('Select repositories to delete using space key, then press enter to confirm.\n'));
 
+    // 为每个仓库添加序号并格式化显示，确保每个选项占一行
+    const formattedChoices = repos.map((repo, index) => {
+        const paddedIndex = String(index + 1).padStart(3, ' ');
+        return {
+            name: `${paddedIndex}. ${repo}`,
+            value: repo,
+            short: repo // 选中后显示的简短名称
+        };
+    });
+
     const { selectedRepos } = await inquirer.prompt([
         {
             type: 'checkbox',
             name: 'selectedRepos',
-            message: `Select repositories to delete (${repos.length} total):`,
-            choices: repos,
-            pageSize: 20,
+            message: `Select repositories to delete (${repos.length} total):\n`,
+            choices: formattedChoices,
+            pageSize: 20, // 每页显示的选项数量
+            loop: false, // 禁用循环滚动
+            prefix: '', // 移除默认前缀
             validate: answer => {
                 if (answer.length === 0) {
                     return 'You must choose at least one repository.';
@@ -76,7 +88,11 @@ export const promptRepositories = async (repos: string[]) => {
                 return true;
             },
         },
-    ]);
+    ], {
+        // 设置输出流，确保正确的终端显示
+        output: process.stdout,
+        input: process.stdin
+    });
 
     // 显示选择结果
     if (selectedRepos.length > 0) {
