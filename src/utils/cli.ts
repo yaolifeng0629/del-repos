@@ -1,7 +1,11 @@
 import inquirer from 'inquirer';
+import searchCheckboxPrompt from 'inquirer-search-checkbox';
 import open from 'open';
 import { green, cyan, yellow, dim } from 'kolorist';
 import { getToken, saveToken } from './config';
+
+// 注册搜索多选框插件
+inquirer.registerPrompt('search-checkbox', searchCheckboxPrompt);
 
 export const promptPlatform = async () => {
     console.log(cyan('\n🚀  Platform Selection'));
@@ -11,7 +15,7 @@ export const promptPlatform = async () => {
         {
             type: 'list',
             name: 'platform',
-            message: '🌐  Choose a platform:',
+            message: 'Choose a platform:',
             choices: [
                 { name: '🐙  GitHub', value: 'GitHub' },
                 { name: '🦊  Gitee', value: 'Gitee' },
@@ -48,7 +52,7 @@ export const promptToken = async (platform: string) => {
         {
             type: 'password',
             name: 'token',
-            message: `🔐  Please enter your ${platform} token:`,
+            message: `Please enter your ${platform} token:`,
             mask: '*',
             validate: input => {
                 if (input.trim().length === 0) {
@@ -67,7 +71,7 @@ export const promptToken = async (platform: string) => {
         {
             type: 'confirm',
             name: 'saveTokenChoice',
-            message: '💾  Save this token to config file for future use?',
+            message: 'Save this token to config file for future use?',
             default: true,
         },
     ]);
@@ -83,7 +87,7 @@ export const promptToken = async (platform: string) => {
 
 export const promptRepositories = async (repos: string[]) => {
     console.log(cyan('\n📦  Repository Selection'));
-    console.log(dim('Select repositories to delete using space key, then press enter to confirm.\n'));
+    console.log(dim('🔍 Use search to filter repositories, Space to select/deselect, Enter to confirm.\n'));
 
     // 为每个仓库添加序号并格式化显示，确保每个选项占一行
     const formattedChoices = repos.map((repo, index) => {
@@ -97,13 +101,14 @@ export const promptRepositories = async (repos: string[]) => {
 
     const { selectedRepos } = await inquirer.prompt([
         {
-            type: 'checkbox',
+            type: 'search-checkbox',
             name: 'selectedRepos',
-            message: `Select repositories to delete (${repos.length} total):\n`,
+            message: `Search and select repositories to delete (${repos.length} total): \n`,
             choices: formattedChoices,
-            pageSize: 20, // 每页显示的选项数量
+            pageSize: 20, // 显示的选项数量
             loop: false, // 禁用循环滚动
-            prefix: '', // 移除默认前缀
+            searchPlaceholder: 'Type to search repositories...',
+            emptyText: 'No repositories match your search',
             validate: answer => {
                 if (answer.length === 0) {
                     return 'You must choose at least one repository.';
