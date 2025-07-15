@@ -1,6 +1,7 @@
 import inquirer from 'inquirer';
 import open from 'open';
 import { green, cyan, yellow, dim } from 'kolorist';
+import { getToken, saveToken } from './config';
 
 export const promptPlatform = async () => {
     console.log(cyan('\n🚀  Platform Selection'));
@@ -23,6 +24,13 @@ export const promptPlatform = async () => {
 };
 
 export const promptToken = async (platform: string) => {
+    // 检查是否已存在token配置
+    const existingToken = getToken(platform);
+    if (existingToken) {
+        console.log(green(`✅  Found existing ${platform} token in config\n`));
+        return existingToken;
+    }
+
     console.log(cyan('\n🔑  Token Authentication'));
     console.log(dim('You need a personal access token to authenticate with the API.\n'));
 
@@ -53,6 +61,21 @@ export const promptToken = async (platform: string) => {
             },
         },
     ]);
+
+    // 询问是否保存token
+    const { saveTokenChoice } = await inquirer.prompt([
+        {
+            type: 'confirm',
+            name: 'saveTokenChoice',
+            message: '💾  Save this token to config file for future use?',
+            default: true,
+        },
+    ]);
+
+    if (saveTokenChoice) {
+        saveToken(platform, token);
+        console.log(green('💾  Token saved to config file'));
+    }
 
     console.log(green('✅  Token received successfully\n'));
     return token;
