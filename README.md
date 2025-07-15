@@ -11,7 +11,7 @@
   <img src="https://img.shields.io/node/v/del-repos?style=flat-square&logo=node.js" alt="node version">
 </p>
 
-<p align="center"><img src="screen.png" width="90%"/></p>
+<p align="center"><img src="screen.gif" width="90%"/></p>
 
 ## ⚡ Introduction
 
