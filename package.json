@@ -1,6 +1,6 @@
 {
     "name": "del-repos",
-    "version": "1.2.0-alpha.0",
+    "version": "1.2.0",
     "bin": {
         "del-repos": "dist/index.js"
     },
