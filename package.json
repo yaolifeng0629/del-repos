@@ -1,6 +1,6 @@
 {
     "name": "del-repos",
-    "version": "1.1.2",
+    "version": "1.2.0",
     "bin": {
         "del-repos": "dist/index.js"
     },
@@ -46,6 +46,7 @@
     "dependencies": {
         "axios": "^0.21.4",
         "inquirer": "^8.2.6",
+        "inquirer-search-checkbox": "^1.0.0",
         "kolorist": "^1.8.0",
         "open": "^8.4.2",
         "ora": "^5.4.1",
