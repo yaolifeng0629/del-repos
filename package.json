@@ -9,7 +9,7 @@
     "scripts": {
         "lint": "pnpm tsc --pretty",
         "build": "node scripts/build.js",
-        "dev": "npm run build && node dist/index.js"
+        "dev": "pnpm build && node dist/index.js"
     },
     "files": [
         "dist",
