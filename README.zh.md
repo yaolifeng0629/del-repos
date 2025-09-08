@@ -58,6 +58,7 @@ yarn global add del-repos
 | `-v`, `--version` | 显示当前版本 |
 | `-h`, `--help` | 显示帮助信息 |
 | `-t <type>` | 仓库类型筛选（`o`: 个人，`a`: 全部） |
+| `--clear-token` | 清除保存的身份验证令牌 |
 
 ### 仓库类型筛选示例
 
@@ -70,6 +71,9 @@ del-repos -t o
 del-repos
 # 或
 del-repos -t a
+
+# 清除保存的令牌（当令牌过期时很有用）
+del-repos --clear-token
 ```
 ## 🌟 使用方法
 
@@ -142,6 +146,10 @@ del-repos
 - ✅ 您的令牌具有所需权限
 - ✅ 平台 API 可访问
 - ✅ 您拥有必要的仓库访问权限
+
+**常见问题：**
+- **401/403 身份验证错误**：您的令牌可能已过期或失效。使用 `del-repos --clear-token` 清除保存的令牌并重新输入新的令牌。
+- **令牌权限问题**：确保您的令牌具有所需的权限范围（参见上面的令牌要求部分）。
 
 如需更多帮助或报告错误，请[提交 Issue](https://github.com/yaolifeng0629/del-repos/issues)
 

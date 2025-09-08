@@ -58,6 +58,7 @@ yarn global add del-repos
 | `-v`, `--version` | Display the current version                   |
 | `-h`, `--help`    | Show help information                         |
 | `-t <type>`       | Repository type filter (`o`: owner, `a`: all) |
+| `--clear-token`   | Clear saved authentication tokens            |
 
 ### Repository Type Filter Examples
 
@@ -70,6 +71,9 @@ del-repos -t o
 del-repos
 # or
 del-repos -t a
+
+# Clear saved tokens (useful when tokens expire)
+del-repos --clear-token
 ```
 
 ## 🌟 Usage
@@ -151,6 +155,10 @@ If you encounter issues, please check:
 -   ✅ Your token has the required permissions
 -   ✅ The platform API is accessible
 -   ✅ You have the necessary repository access rights
+
+**Common Issues:**
+- **401/403 Authentication Errors**: Your token may have expired or become invalid. Use `del-repos --clear-token` to clear saved tokens and re-enter fresh ones.
+- **Token Permission Issues**: Ensure your token has the required scopes (see Token Requirements section above).
 
 For additional help or to report bugs, please [submit an issue](https://github.com/yaolifeng0629/del-repos/issues).
 

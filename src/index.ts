@@ -7,6 +7,7 @@ import { promptPlatform, promptToken, promptRepositories } from './utils/cli';
 import { fetchGithubRepos, deleteGithubRepos } from './services/github';
 import { fetchGiteeRepos, deleteGiteeRepos } from './services/gitee';
 import { startSpinner, stopSpinner } from './utils/spinner';
+import { clearAllTokens } from './utils/config';
 import { readFileSync } from 'fs';
 import { reposType } from './utils';
 import { join } from 'path';
@@ -28,6 +29,11 @@ const argv = yargs(hideBin(process.argv))
         demandOption: false, // 是否可选参数
         type: 'string',
     })
+    .option('clear-token', {
+        describe: '清除保存的token令牌',
+        type: 'boolean',
+        default: false,
+    })
     .epilog('For more information, visit https://github.com/yaolifeng0629/del-repos.git').argv;
 
 const printWelcomeBanner = () => {
@@ -41,6 +47,21 @@ const printWelcomeBanner = () => {
 
 const main = async () => {
     printWelcomeBanner();
+
+    // Check if user wants to clear tokens
+    const { 'clear-token': clearToken } = await argv;
+    if (clearToken) {
+        try {
+            clearAllTokens();
+            console.log(green('✅  All saved tokens have been cleared successfully!'));
+            console.log(dim('You will need to re-enter your tokens on the next run.\n'));
+            process.exit(0);
+        } catch (error) {
+            console.log(red('❌  Failed to clear tokens:'));
+            console.error(red((error as Error).message));
+            process.exit(1);
+        }
+    }
 
     const platform = await promptPlatform();
 
@@ -119,11 +140,20 @@ const main = async () => {
     } catch (error) {
         stopSpinner('❌  Failed to fetch repositories');
         console.log(red('\n💥  An error occurred:'));
-        console.error(red((error as Error).message));
-        console.log(dim('\nPlease check:'));
-        console.log(dim('  • Your internet connection'));
-        console.log(dim('  • Your token permissions'));
-        console.log(dim('  • The platform API status\n'));
+        const errorMessage = (error as Error).message;
+        console.error(red(errorMessage));
+        
+        // Check if it's a 401/403 authentication error and suggest clearing tokens
+        if (errorMessage.includes('401') || errorMessage.includes('403') || errorMessage.includes('Unauthorized') || errorMessage.includes('Forbidden')) {
+            console.log(dim('\nThis might be due to an expired or invalid token.'));
+            console.log(dim('💡  Try clearing saved tokens and re-entering them:'));
+            console.log(yellow('   del-repos --clear-token\n'));
+        } else {
+            console.log(dim('\nPlease check:'));
+            console.log(dim('  • Your internet connection'));
+            console.log(dim('  • Your token permissions'));
+            console.log(dim('  • The platform API status\n'));
+        }
         process.exit(1);
     }
 };
