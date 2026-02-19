@@ -75,6 +75,24 @@ export const saveToken = (platform: string, token: string): void => {
 };
 
 /**
+ * 删除平台token
+ * @param platform 平台名称
+ */
+export const removeToken = (platform: string): void => {
+    const config = readConfig();
+    const tokenKey = platform.toLowerCase() === 'github' ? 'github_token' : 'gitee_token';
+    delete config[tokenKey];
+    writeConfig(config);
+};
+
+/**
+ * 清除所有保存的token
+ */
+export const clearAllTokens = (): void => {
+    writeConfig({});
+};
+
+/**
  * 检查是否存在配置文件
  * @returns 是否存在配置文件
  */
