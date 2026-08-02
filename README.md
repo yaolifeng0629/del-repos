@@ -11,223 +11,125 @@
   <img src="https://img.shields.io/node/v/del-repos?style=flat-square&logo=node.js" alt="node version">
 </p>
 
-<p align="center"><img src="screen.gif" width="90%"/></p>
+<p align="center"><img src="screen.gif" width="90%" alt="del-repos interactive terminal"></p>
 
-## ⚡ Introduction
+`del-repos` is an interactive CLI for selecting and permanently deleting GitHub or Gitee repositories in batches. It supports searchable multi-selection, repository-scope filtering, locally saved tokens, and per-repository results.
 
-`del-repos` is a powerful command-line tool for batch deleting GitHub or Gitee repositories with an intuitive interactive interface.
+> [!WARNING]
+> Repository deletion is irreversible. This tool has no dry-run or non-interactive deletion mode. Back up anything important, review the printed repository list, and approve deletion only when the exact targets are correct.
 
-## 🛠️ Features
-
--   🌐 **Multi-platform Support**: Works with both `GitHub` and `Gitee` platforms
--   🔍 **Smart Search**: Advanced search functionality to quickly find repositories
--   ✅ **Batch Selection**: Select multiple repositories with an interactive checkbox interface
--   🔐 **Token Management**: Secure token storage and automatic token validation
--   🎯 **Repository Filtering**: Choose between personal repositories or all accessible repositories
--   💾 **Configuration Persistence**: Save tokens for future use
--   🎨 **Rich UI**: Beautiful colored output with progress indicators and spinners
--   ⚠️ **Safety First**: Multiple confirmation steps to prevent accidental deletions
--   📊 **Detailed Feedback**: Comprehensive error handling and operation summaries
-
-## 🚀 Installation
+## Install the CLI
 
 ### Prerequisites
 
--   `Node.js` v14.0.0 or higher installed on your computer
--   You can download and install Node.js from the [official website](https://nodejs.org/)
+- Node.js 14 or newer
+- An interactive terminal
+- A personal access token for GitHub or Gitee with permission to delete the repositories you select
 
-### Installation Steps
-
-Install the package globally using npm or pnpm:
+Install globally with one package manager:
 
 ```bash
-# Using npm
-npm install del-repos -g
-
-# Using pnpm
-pnpm install del-repos -g
-
-# Using yarn
+npm install --global del-repos
+pnpm add --global del-repos
 yarn global add del-repos
 ```
 
-## 📋 Command Line Options
-
-| Option            | Description                                   |
-| ----------------- | --------------------------------------------- |
-| `-v`, `--version` | Display the current version                   |
-| `-h`, `--help`    | Show help information                         |
-| `-t <type>`       | Repository type filter (`o`: owner, `a`: all) |
-| `--clear-token`   | Clear saved authentication tokens            |
-
-### Repository Type Filter Examples
+For a one-off run without global installation:
 
 ```bash
-# Get only repositories you own
-del-repos -t o
+npx del-repos
+```
 
-# Get all accessible repositories (default)
-# (includes collaborator and organization repositories)
+Verify the installation:
+
+```bash
+del-repos --version
+del-repos --help
+```
+
+## Use the CLI
+
+Start the interactive flow:
+
+```bash
 del-repos
-# or
-del-repos -t a
+```
 
-# Clear saved tokens (useful when tokens expire)
+The CLI will:
+
+1. Ask you to choose GitHub or Gitee.
+2. Open the matching token-creation page when no saved token is available.
+3. Fetch repositories, using the selected scope.
+4. Let you search and select repositories. Type to search, use Space to toggle, then press Enter.
+5. Print the selected repository names and ask for final confirmation.
+6. Delete each selected repository sequentially and print a summary of successes and failures.
+
+### Options
+
+| Option | Meaning |
+| --- | --- |
+| `-v`, `--version` | Print the installed version. |
+| `-h`, `--help` | Show command help. |
+| `-t`, `--type <o\|a>` | Fetch `o` (owner) repositories or `a` (all accessible) repositories. Default: `a`. |
+| `--clear-token` | Clear both saved platform token values. |
+
+Examples:
+
+```bash
+del-repos --type o
+del-repos --type a
 del-repos --clear-token
 ```
 
-## 🌟 Usage
+`owner` is the focused choice for deleting repositories owned by the signed-in account. `all` asks the platform API for all accessible repositories, including collaborator and organization repositories. Being listed does not guarantee deletion: the current CLI sends deletion requests under the authenticated username, so collaborator and organization repositories may fail even when they are visible in the picker.
 
-### Quick Start
+## Tokens and local data
 
-Simply run the command to start the interactive deletion process:
+The CLI opens these pages when it needs a token:
+
+- GitHub: the classic personal-access-token page with `repo`, `delete_repo`, and `project` scopes preselected.
+- Gitee: the personal-access-token page. Grant repository deletion permission.
+
+When you choose to save a token, the CLI writes it as plain JSON to `<home>/.del-repos/config.json`, with separate `github_token` and `gitee_token` fields. Treat this file as a credential: do not commit, share, or back it up insecurely. `del-repos --clear-token` replaces the saved values with `{}`; it does not delete the configuration file.
+
+## Agent skill
+
+This repository also contains a `del-repos` agent skill. It helps Codex and compatible agents prepare an intentional deletion run, protect tokens, and require explicit approval after the final repository list is shown.
+
+Install it globally for Codex:
 
 ```bash
-del-repos
+npx skills add yaolifeng0629/del-repos --skill del-repos --global --agent codex
 ```
 
-### Step-by-Step Process
+Install it only for the current project by omitting `--global`. Full instructions are in [skills/README.md](skills/README.md).
 
-1. **🚀 Platform Selection**
+## Troubleshooting
 
-    - Choose between `GitHub` or `Gitee` platform
-    - The tool provides a clean, interactive selection interface
+| Symptom | What to check |
+| --- | --- |
+| `401`, `403`, `Unauthorized`, or `Forbidden` | Clear saved values with `del-repos --clear-token`, create a new token with the required permissions, then re-run and review the repository selection again. |
+| No repositories appear | Confirm the selected platform, token permissions, account, and repository scope. |
+| A repository is listed but deletion fails | Confirm that the authenticated account owns it and has deletion rights. This is common for collaborator or organization repositories selected through `--type a`. |
+| Some deletions fail | Read each per-repository result and the final counts. The CLI continues after a failure, so the final completion message is not proof that every selected repository was deleted. |
 
-2. **🔑 Token Authentication**
+## Development
 
-    - Enter your personal access token for the selected platform
-    - The tool automatically opens the token generation page in your browser
-    - **Required permissions:**
-        - **GitHub**: `delete_repo`, `project`, `repo`
-        - **Gitee**: Repository deletion permissions
-    - Option to save token securely for future use
+```bash
+git clone https://github.com/yaolifeng0629/del-repos.git
+cd del-repos
+pnpm install
+pnpm lint
+pnpm build
+pnpm dev
+```
 
-3. **📦 Repository Discovery**
+`pnpm lint` runs the TypeScript compiler check. `pnpm build` emits the CLI to `dist/`, and `pnpm dev` rebuilds then runs that local output. This repository currently has no automated test script; run type checking and a controlled interactive smoke test before submitting a change.
 
-    - The tool fetches your repository list with a progress spinner
-    - Displays the total number of repositories found
-    - Supports filtering by repository type (owner vs. all accessible)
+## Contributing
 
-4. **🔍 Smart Repository Selection**
+Open an issue for defects or proposals, and send focused pull requests with matching documentation changes. Do not include credentials, repository inventories, or destructive-operation output containing private URLs in issues or pull requests.
 
-    - **Search functionality**: Type to filter repositories in real-time
-    - **Batch selection**: Use spacebar to select/deselect repositories
-    - **Numbered list**: Easy navigation with numbered repository list
-    - **Visual feedback**: Clear indication of selected repositories
+## License
 
-5. **⚠️ Safety Confirmation**
-
-    - **Danger zone warning**: Clear indication of the destructive nature
-    - **Repository review**: List of all repositories to be deleted
-    - **Final confirmation**: Explicit confirmation required before deletion
-
-6. **🗑️ Deletion Process**
-    - Real-time progress updates with spinners
-    - Detailed error handling and reporting
-    - Success summary upon completion
-
-## ⚠️ Important Considerations
-
-### 🚨 Safety Warnings
-
--   **⚠️ IRREVERSIBLE ACTION**: Deleted repositories **CANNOT** be restored
--   **🔍 Double-check**: Always verify the repositories you're about to delete
--   **🔐 Token Security**: Keep your access tokens secure and never share them
--   **📝 Backup**: Consider backing up important repositories before deletion
-
-### 🔑 Token Requirements
-
-#### GitHub Token Permissions
-
--   `delete_repo` - Required for repository deletion
--   `project` - Access to project boards
--   `repo` - Full repository access
-
-#### Gitee Token Permissions
-
--   Repository deletion permissions must be enabled
-
-### 🛠️ Troubleshooting
-
-If you encounter issues, please check:
-
--   ✅ Your internet connection is stable
--   ✅ Your token has the required permissions
--   ✅ The platform API is accessible
--   ✅ You have the necessary repository access rights
-
-**Common Issues:**
-- **401/403 Authentication Errors**: Your token may have expired or become invalid. Use `del-repos --clear-token` to clear saved tokens and re-enter fresh ones.
-- **Token Permission Issues**: Ensure your token has the required scopes (see Token Requirements section above).
-
-For additional help or to report bugs, please [submit an issue](https://github.com/yaolifeng0629/del-repos/issues).
-
-## 🙌 Contributing
-
-We welcome all contributions and suggestions! If you want to contribute to `del-repos`, here's how:
-
-### Development Setup
-
-1. **Clone the repository:**
-
-    ```bash
-    git clone https://github.com/yaolifeng0629/del-repos.git
-    cd del-repos
-    ```
-
-2. **Install dependencies:**
-
-    ```bash
-    npm install
-    # or
-    pnpm install
-    ```
-
-3. **Development and testing:**
-
-    ```bash
-    npm run dev
-    # or
-    pnpm dev
-    ```
-
-4. **Build the project:**
-    ```bash
-    npm run build
-    ```
-
-### How to Contribute
-
--   🐛 **Report bugs** by [creating an issue](https://github.com/yaolifeng0629/del-repos/issues)
--   💡 **Suggest features** through issue discussions
--   🔧 **Submit pull requests** for bug fixes or new features
--   📖 **Improve documentation** to help other users
--   ⭐ **Star the repository** if you find it useful
-
-### Development Guidelines
-
--   Follow the existing code style and conventions
--   Add tests for new features
--   Update documentation when necessary
--   Ensure all tests pass before submitting PR
-
-**Thanks to all contributors who have helped make `del-repos` better!** 🎉
-
-## ⭐ Support the Project
-
-If you find this tool helpful, please consider:
-
--   **⭐ Star the repository** on [GitHub](https://github.com/yaolifeng0629/del-repos)
--   **📣 Share with others** who might benefit from it
--   **🐛 Report issues** to help improve the tool
--   **🔧 Contribute** to make it even better
-
-Your support is the driving force for continued development!
-
-## 📊 Star History
-
-[![Stargazers over time](https://starchart.cc/yaolifeng0629/del-repos.svg?variant=adaptive)](https://starchart.cc/yaolifeng0629/del-repos)
-
-## 📄 License
-
-This project is licensed under the ISC License - see the [LICENSE](LICENSE) file for details.
+ISC. See [LICENSE](LICENSE).
